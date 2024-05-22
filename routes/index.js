@@ -16,6 +16,7 @@ router.post("/dev", dev.testPayload);
 
 // User
 router.post("/login", user.login);
+router.post("/register", user.add_user);
 
 // Absen
 router.post("/absen/:id", absen.absen);
