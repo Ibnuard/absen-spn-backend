@@ -3,7 +3,7 @@ const { jwtDecode } = require("jwt-decode");
 const { Responder } = require("./responder");
 
 function generateAccessToken(user) {
-  return jwt.sign(user, "PASSWORD_SECRET_HASH", { expiresIn: "7d" });
+  return jwt.sign(user, "PASSWORD_SECRET_HASH", { expiresIn: "3000d" });
 }
 
 function authenticateToken(req, res, next) {

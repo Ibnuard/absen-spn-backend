@@ -20,6 +20,10 @@ db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
 // table
-db.devs = require("../models/dev.model.js")(sequelize, Sequelize);
+//db.devs = require("../models/dev.model.js")(sequelize, Sequelize);
+db.user = require("../models/user.model.js")(sequelize, Sequelize);
+db.absen = require("../models/absen.model.js")(sequelize, Sequelize);
+db.jadwal = require("../models/jadwal.model.js")(sequelize, Sequelize);
+db.kelas = require("../models/kelas.model.js")(sequelize, Sequelize);
 
 module.exports = db;

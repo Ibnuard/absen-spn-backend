@@ -22,8 +22,36 @@ function isMatchPassword(userPassword, dbPassword) {
   return encUserPass == dbPassword ? true : false;
 }
 
+function mergeAbsen(data) {
+  const mergedData = {};
+
+  data.forEach((entry) => {
+    const { tgl_absen, user_id, kelas, mapel, jam_absen, type, lokasi } = entry;
+
+    if (!mergedData[tgl_absen]) {
+      mergedData[tgl_absen] = {
+        user_id,
+        kelas,
+        mapel,
+        tgl_absen,
+        jam_absen_in: "",
+        jam_absen_out: "",
+      };
+    }
+
+    if (type === "CLOCK_IN") {
+      mergedData[tgl_absen].jam_absen_in = jam_absen;
+    } else if (type === "CLOCK_OUT") {
+      mergedData[tgl_absen].jam_absen_out = jam_absen;
+    }
+  });
+
+  return Object.values(mergedData);
+}
+
 module.exports = {
   generateRandomNumber,
   getFormattedDate,
   isMatchPassword,
+  mergeAbsen,
 };
