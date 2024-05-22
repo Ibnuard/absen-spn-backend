@@ -17,21 +17,20 @@ exports.get_jadwal = async (req, res) => {
 exports.add_jadwal = async (req, res) => {
   const { title, tanggal, jam_in, jam_out } = req.body;
   try {
-    return await JADWAL.create(
-      {
-        title: title,
-        tanggal: tanggal,
-        jam_masuk: jam_in,
-        jam_keluar: jam_out,
-      }
-        .then((res) => {
-          return Responder(res, "OK", null, res, 200);
-        })
-        .catch((err) => {
-          throw err;
-        })
-    );
+    return await JADWAL.create({
+      title: title,
+      tanggal: tanggal,
+      jam_masuk: jam_in,
+      jam_keluar: jam_out,
+    })
+      .then((result) => {
+        return Responder(res, "OK", null, result, 200);
+      })
+      .catch((err) => {
+        throw err;
+      });
   } catch (error) {
+    console.log(error);
     Responder(res, "ERROR", ERROR_MESSAGE.GENERAL, null, 500);
     return;
   }
