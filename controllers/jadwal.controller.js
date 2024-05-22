@@ -20,8 +20,8 @@ exports.add_jadwal = async (req, res) => {
     return await JADWAL.create({
       title: title,
       tanggal: tanggal,
-      jam_masuk: jam_in,
-      jam_keluar: jam_out,
+      jam_in: jam_in,
+      jam_out: jam_out,
     })
       .then((result) => {
         return Responder(res, "OK", null, result, 200);

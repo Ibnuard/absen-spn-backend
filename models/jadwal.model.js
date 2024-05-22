@@ -8,10 +8,10 @@ module.exports = (sequelize, Sequelize) => {
       tanggal: {
         type: Sequelize.STRING,
       },
-      jam_masuk: {
+      jam_in: {
         type: Sequelize.STRING,
       },
-      jam_keluar: {
+      jam_out: {
         type: Sequelize.STRING,
       },
     },

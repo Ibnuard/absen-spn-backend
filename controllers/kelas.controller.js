@@ -3,7 +3,7 @@ const { ERROR_MESSAGE } = require("../utils/constants");
 const { Responder } = require("../utils/responder");
 const KELAS = db.kelas;
 
-exports.get_kelas = async () => {
+exports.get_kelas = async (req, res) => {
   try {
     const getKelas = await KELAS.findAll();
     let temp = [];
@@ -18,7 +18,7 @@ exports.get_kelas = async () => {
   }
 };
 
-exports.add_kelas = async () => {
+exports.add_kelas = async (req, res) => {
   const { kelas } = req.query;
   try {
     await KELAS.create({
@@ -33,7 +33,7 @@ exports.add_kelas = async () => {
   }
 };
 
-exports.delete_kelas = async () => {
+exports.delete_kelas = async (req, res) => {
   const { id } = req.params;
   try {
     await KELAS.destroy({
