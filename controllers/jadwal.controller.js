@@ -15,11 +15,12 @@ exports.get_jadwal = async (req, res) => {
 };
 
 exports.add_jadwal = async (req, res) => {
-  const { title, tanggal, jam_in, jam_out } = req.body;
+  const { title, tanggal, lokasi, jam_in, jam_out } = req.body;
   try {
     return await JADWAL.create({
       title: title,
       tanggal: tanggal,
+      lokasi: lokasi,
       jam_in: jam_in,
       jam_out: jam_out,
     })

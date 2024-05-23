@@ -8,6 +8,9 @@ module.exports = (sequelize, Sequelize) => {
       tanggal: {
         type: Sequelize.STRING,
       },
+      lokasi: {
+        type: Sequelize.STRING,
+      },
       jam_in: {
         type: Sequelize.STRING,
       },

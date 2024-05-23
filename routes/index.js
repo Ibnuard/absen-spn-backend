@@ -8,6 +8,7 @@ const user = require("../controllers/user.controller");
 const absen = require("../controllers/absen.controller");
 const jadwal = require("../controllers/jadwal.controller");
 const kelas = require("../controllers/kelas.controller");
+const mapel = require("../controllers/mapel.controller");
 
 // ==== routes
 
@@ -31,5 +32,10 @@ router.delete("/jadwal/:id", jadwal.delete_jadwal);
 router.post("/kelas", kelas.add_kelas);
 router.get("/kelas", kelas.get_kelas);
 router.delete("/kelas/:id", kelas.delete_kelas);
+
+// Mapel
+router.post("/mapel", mapel.add_mapel);
+router.get("/mapel", mapel.get_mapel);
+router.delete("/mapel/:id", mapel.delete_mapel);
 
 module.exports = { router };
