@@ -19,6 +19,7 @@ router.post("/dev", dev.testPayload);
 // User
 router.post("/login", user.login);
 router.post("/register", user.add_user);
+router.post("/update-profile/:id", user.update_avatar);
 
 // Absen
 router.post("/absen/:id", absen.absen);

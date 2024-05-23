@@ -3,6 +3,7 @@ const db = require("../db");
 const { ERROR_MESSAGE } = require("../utils/constants");
 const { Responder } = require("../utils/responder");
 const { isMatchPassword } = require("../utils/utils");
+const { uploadImagesCloudinary } = require("../utils/cloudinary");
 const USER = db.user;
 
 exports.login = async (req, res) => {
@@ -82,6 +83,37 @@ exports.add_user = async (req, res) => {
     return;
   } catch (error) {
     Responder(res, "ERROR", ERROR_MESSAGE.GENERAL, null, 500);
+    return;
+  }
+};
+
+exports.update_avatar = async (req, res) => {
+  const { id } = req.params;
+  const { image } = req.body;
+  try {
+    const uploadPic = await uploadImagesCloudinary(image);
+    if (uploadPic.url) {
+      // Update user
+      await USER.update(
+        { avatar: uploadPic.url },
+        {
+          where: {
+            id: id,
+          },
+        }
+      );
+
+      // Get Updated user
+      const getUser = await USER.findOne({ where: { id: id } });
+      const userData = await getUser["dataValues"];
+      Responder(res, "OK", null, userData, 200);
+      return;
+    } else {
+      Responder(res, "ERROR", "Gagal mengupload gambar.", null, 400);
+      return;
+    }
+  } catch (error) {
+    Responder(res, "ERROR", ERROR_MESSAGE.GENERAL, 400);
     return;
   }
 };

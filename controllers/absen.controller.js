@@ -45,6 +45,30 @@ exports.absen = async (req, res) => {
           Responder(res, "ERROR", "Anda sudah clock in hari ini.", null, 400);
           return;
         }
+
+        // get mapel rekap info
+        const getMapelRekap = await REKAP.findOne({
+          where: {
+            user_id: id,
+            mapel_id: mapel,
+            periode: moment().format("MM-YYYY"),
+          },
+        });
+
+        // Check if mapel limit
+        if (getMapelRekap) {
+          const mapelRekapData = await getMapelRekap["dataValues"];
+          if (mapelRekapData.kehadiran >= mapelRekapData.max_kehadiran) {
+            Responder(
+              res,
+              "ERROR",
+              "Kehadiran untuk mapel ini sudah maksimal.",
+              null,
+              400
+            );
+            return;
+          }
+        }
       } else {
         // Check if already clock in
         const getClockinAbsen = await ABSEN.findOne({
@@ -61,8 +85,6 @@ exports.absen = async (req, res) => {
         }
 
         const clockInData = await getClockinAbsen["dataValues"];
-        console.log("CI DATA", clockInData.mapel_id);
-        console.log("US DATA", mapel);
         if (clockInData.mapel_id.toString() !== mapel.toString()) {
           Responder(
             res,
@@ -157,10 +179,13 @@ exports.absen = async (req, res) => {
 
 exports.history_absen = async (req, res) => {
   const { id } = req.params;
+  const { mapelId, periode } = req.query;
   try {
     const getAbsen = await ABSEN.findAll({
       where: {
         user_id: id,
+        mapel_id: mapelId,
+        periode: periode,
       },
     });
 
