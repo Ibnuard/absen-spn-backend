@@ -4,6 +4,12 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.STRING,
     },
     user_id: {
+      type: Sequelize.INTEGER,
+    },
+    name: {
+      type: Sequelize.STRING,
+    },
+    nim: {
       type: Sequelize.STRING,
     },
     username: {
@@ -12,6 +18,9 @@ module.exports = (sequelize, Sequelize) => {
     kelas: {
       type: Sequelize.STRING,
     },
+    mapel_id: {
+      type: Sequelize.INTEGER,
+    },
     mapel: {
       type: Sequelize.STRING,
     },
@@ -19,6 +28,9 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.STRING,
     },
     jam_absen: {
+      type: Sequelize.STRING,
+    },
+    periode: {
       type: Sequelize.STRING,
     },
   });

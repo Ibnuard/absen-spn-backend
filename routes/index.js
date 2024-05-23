@@ -9,6 +9,7 @@ const absen = require("../controllers/absen.controller");
 const jadwal = require("../controllers/jadwal.controller");
 const kelas = require("../controllers/kelas.controller");
 const mapel = require("../controllers/mapel.controller");
+const rekap = require("../controllers/rekap.controller");
 
 // ==== routes
 
@@ -21,7 +22,7 @@ router.post("/register", user.add_user);
 
 // Absen
 router.post("/absen/:id", absen.absen);
-router.get("/rekap/:id", absen.rekap);
+router.get("/history/:id", absen.history_absen);
 
 // Jadwal
 router.post("/jadwal", jadwal.add_jadwal);
@@ -37,5 +38,8 @@ router.delete("/kelas/:id", kelas.delete_kelas);
 router.post("/mapel", mapel.add_mapel);
 router.get("/mapel", mapel.get_mapel);
 router.delete("/mapel/:id", mapel.delete_mapel);
+
+// Rekap
+router.get("/rekap/:id", rekap.get_rekap);
 
 module.exports = { router };

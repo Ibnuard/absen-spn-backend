@@ -26,7 +26,8 @@ function mergeAbsen(data) {
   const mergedData = {};
 
   data.forEach((entry) => {
-    const { tgl_absen, user_id, kelas, mapel, jam_absen, type, lokasi } = entry;
+    const { tgl_absen, user_id, kelas, mapel, jam_absen, type, periode } =
+      entry;
 
     if (!mergedData[tgl_absen]) {
       mergedData[tgl_absen] = {
@@ -34,6 +35,7 @@ function mergeAbsen(data) {
         kelas,
         mapel,
         tgl_absen,
+        periode,
         jam_absen_in: "",
         jam_absen_out: "",
       };
