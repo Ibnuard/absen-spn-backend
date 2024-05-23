@@ -42,9 +42,9 @@ function mergeAbsen(data) {
     }
 
     if (type === "CLOCK_IN") {
-      mergedData[tgl_absen].jam_absen_in = jam_absen;
+      mergedData[tgl_absen].jam_absen_in = jam_absen || "-";
     } else if (type === "CLOCK_OUT") {
-      mergedData[tgl_absen].jam_absen_out = jam_absen;
+      mergedData[tgl_absen].jam_absen_out = jam_absen || "-";
     }
   });
 

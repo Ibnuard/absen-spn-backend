@@ -128,22 +128,24 @@ exports.absen = async (req, res) => {
         },
       });
 
-      // Update rekap kehadiran
-      if (getRekap) {
+      if (type == ABSEN_TYPE.CLOCK_IN) {
+        // Update rekap kehadiran
+        if (!getRekap) {
+          await REKAP.create({
+            user_id: id,
+            mapel_id: mapel_id,
+            mapel: mapelData.name,
+            periode: periode,
+            kehadiran: 0,
+            max_kehadiran: mapelData.max_pertemuan,
+          });
+        }
+      } else {
         const rekapData = await getRekap["dataValues"];
         await REKAP.update(
           { kehadiran: rekapData.kehadiran + 1 },
           { where: { id: rekapData.id } }
         );
-      } else {
-        await REKAP.create({
-          user_id: id,
-          mapel_id: mapel_id,
-          mapel: mapelData.name,
-          periode: periode,
-          kehadiran: 1,
-          max_kehadiran: mapelData.max_pertemuan,
-        });
       }
     }
 
@@ -162,9 +164,7 @@ exports.absen = async (req, res) => {
       periode: moment().format("MM-YYYY"),
     })
       .then((result) => {
-        if (type == ABSEN_TYPE.CLOCK_OUT) {
-          createRekap(result.periode, result.mapel_id);
-        }
+        createRekap(result.periode, result.mapel_id);
 
         return Responder(res, "OK", null, result, 200);
       })
