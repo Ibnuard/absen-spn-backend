@@ -117,3 +117,14 @@ exports.update_avatar = async (req, res) => {
     return;
   }
 };
+
+exports.get_users = async (req, res) => {
+  try {
+    const getUsers = await USER.findAll();
+    Responder(res, "OK", null, getUsers, 200);
+    return;
+  } catch (error) {
+    Responder(res, "ERROR", ERROR_MESSAGE.GENERAL, 400);
+    return;
+  }
+};
