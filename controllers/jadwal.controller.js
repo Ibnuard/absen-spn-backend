@@ -52,3 +52,34 @@ exports.delete_jadwal = async (req, res) => {
     return;
   }
 };
+
+exports.edit_jadwal = async (req, res) => {
+  const { title, tanggal, lokasi, jam_in, jam_out } = req.body;
+  const { id } = req.params;
+  try {
+    return await JADWAL.update(
+      {
+        title: title,
+        tanggal: tanggal,
+        lokasi: lokasi,
+        jam_in: jam_in,
+        jam_out: jam_out,
+      },
+      {
+        where: {
+          id: id,
+        },
+      }
+    )
+      .then((result) => {
+        return Responder(res, "OK", null, result, 200);
+      })
+      .catch((err) => {
+        throw err;
+      });
+  } catch (error) {
+    console.log(error);
+    Responder(res, "ERROR", ERROR_MESSAGE.GENERAL, null, 500);
+    return;
+  }
+};

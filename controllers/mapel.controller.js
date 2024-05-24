@@ -46,3 +46,23 @@ exports.delete_mapel = async (req, res) => {
     return;
   }
 };
+
+exports.edit_mapel = async (req, res) => {
+  const { name, maxPertemuan } = req.body;
+  const { id } = req.params;
+  try {
+    await MAPEL.update(
+      {
+        name: name,
+        max_pertemuan: maxPertemuan,
+      },
+      { where: { id: id } }
+    );
+
+    Responder(res, "OK", null, { message: "OK" }, 200);
+    return;
+  } catch (error) {
+    Responder(res, "ERROR", ERROR_MESSAGE.GENERAL, null, 500);
+    return;
+  }
+};

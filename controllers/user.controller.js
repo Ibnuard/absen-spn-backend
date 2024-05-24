@@ -69,8 +69,10 @@ exports.add_user = async (req, res) => {
       username: username,
       password: encPassword,
       nim: nim,
-      status: status,
-      avatar: avatar,
+      status: status || "Pelajar",
+      avatar:
+        avatar ||
+        "https://res.cloudinary.com/dx4b4m2n2/image/upload/v1716547951/tb9fft00rdblrq5wdruf.jpg",
       kelas: kelas,
       tahun_masuk: tahun_masuk,
       wali_kelas: wali_kelas,
@@ -125,6 +127,57 @@ exports.get_users = async (req, res) => {
     return;
   } catch (error) {
     Responder(res, "ERROR", ERROR_MESSAGE.GENERAL, 400);
+    return;
+  }
+};
+
+exports.delete_user = async (req, res) => {
+  const { id } = req.params;
+  try {
+    await USER.destroy({ where: { id: id } });
+    Responder(res, "OK", null, { message: "OK" }, 200);
+    return;
+  } catch (error) {
+    Responder(res, "ERROR", ERROR_MESSAGE.GENERAL, 400);
+    return;
+  }
+};
+
+exports.edit_user = async (req, res) => {
+  const {
+    nama,
+    nim,
+    kelas,
+    tahun_masuk,
+    wali_kelas,
+    tanggal_lahir,
+    tempat_lahir,
+    nomor_telp,
+  } = req.body;
+  const { id } = req.params;
+  try {
+    await USER.update(
+      {
+        nama: nama,
+        nim: nim,
+        kelas: kelas,
+        tahun_masuk: tahun_masuk,
+        wali_kelas: wali_kelas,
+        tanggal_lahir: tanggal_lahir,
+        tempat_lahir: tempat_lahir,
+        nomor_telp: nomor_telp,
+      },
+      {
+        where: {
+          id: id,
+        },
+      }
+    );
+
+    Responder(res, "OK", null, { message: "Sukses" }, 200);
+    return;
+  } catch (error) {
+    Responder(res, "ERROR", ERROR_MESSAGE.GENERAL, null, 500);
     return;
   }
 };
