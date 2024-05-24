@@ -4,6 +4,7 @@ const { ERROR_MESSAGE } = require("../utils/constants");
 const { Responder } = require("../utils/responder");
 const { isMatchPassword } = require("../utils/utils");
 const { uploadImagesCloudinary } = require("../utils/cloudinary");
+const { where } = require("sequelize");
 const USER = db.user;
 
 exports.login = async (req, res) => {
@@ -63,6 +64,17 @@ exports.add_user = async (req, res) => {
   } = req.body;
   try {
     const encPassword = md5(password);
+
+    const getAllUser = await USER.findOne({
+      where: {
+        username: username,
+      },
+    });
+
+    if (getAllUser) {
+      Responder(res, "ERROR", "Username telah dipakai.", null, 400);
+      return;
+    }
 
     await USER.create({
       nama: nama,
