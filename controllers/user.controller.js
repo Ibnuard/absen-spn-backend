@@ -96,6 +96,7 @@ exports.add_user = async (req, res) => {
     Responder(res, "OK", null, { message: "Sukses" }, 200);
     return;
   } catch (error) {
+    console.log(error);
     Responder(res, "ERROR", ERROR_MESSAGE.GENERAL, null, 500);
     return;
   }
