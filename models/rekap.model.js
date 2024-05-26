@@ -1,10 +1,5 @@
 module.exports = (sequelize, Sequelize) => {
   const Rekap = sequelize.define("rekap", {
-    id: {
-      type: Sequelize.INTEGER,
-      autoIncrement: true, // Automatically increments the value for each new record
-      primaryKey: true, // Sets this field as the primary key
-    },
     user_id: {
       type: Sequelize.INTEGER,
     },
