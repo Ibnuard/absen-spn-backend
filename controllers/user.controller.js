@@ -4,7 +4,7 @@ const { ERROR_MESSAGE } = require("../utils/constants");
 const { Responder } = require("../utils/responder");
 const { isMatchPassword } = require("../utils/utils");
 const { uploadImagesCloudinary } = require("../utils/cloudinary");
-const { where } = require("sequelize");
+
 const USER = db.user;
 
 exports.login = async (req, res) => {
@@ -48,20 +48,7 @@ exports.login = async (req, res) => {
 };
 
 exports.add_user = async (req, res) => {
-  const {
-    nama,
-    username,
-    password,
-    nim,
-    status,
-    avatar,
-    kelas,
-    tahun_masuk,
-    wali_kelas,
-    tanggal_lahir,
-    tempat_lahir,
-    nomor_telp,
-  } = req.body;
+  const { nama, username, password, nrp, avatar, jabatan, pangkat } = req.body;
   try {
     const encPassword = md5(password);
 
@@ -80,17 +67,12 @@ exports.add_user = async (req, res) => {
       nama: nama,
       username: username,
       password: encPassword,
-      nim: nim,
-      status: status || "Pelajar",
+      nrp: nrp,
       avatar:
         avatar ||
         "https://res.cloudinary.com/dx4b4m2n2/image/upload/v1716547951/tb9fft00rdblrq5wdruf.jpg",
-      kelas: kelas,
-      tahun_masuk: tahun_masuk,
-      wali_kelas: wali_kelas,
-      tanggal_lahir: tanggal_lahir,
-      tempat_lahir: tempat_lahir,
-      nomor_telp: nomor_telp,
+      jabatan: jabatan,
+      pangkat: pangkat,
     });
 
     Responder(res, "OK", null, { message: "Sukses" }, 200);
@@ -157,28 +139,15 @@ exports.delete_user = async (req, res) => {
 };
 
 exports.edit_user = async (req, res) => {
-  const {
-    nama,
-    nim,
-    kelas,
-    tahun_masuk,
-    wali_kelas,
-    tanggal_lahir,
-    tempat_lahir,
-    nomor_telp,
-  } = req.body;
+  const { nama, nrp, jabatan, pangkat } = req.body;
   const { id } = req.params;
   try {
     await USER.update(
       {
         nama: nama,
-        nim: nim,
-        kelas: kelas,
-        tahun_masuk: tahun_masuk,
-        wali_kelas: wali_kelas,
-        tanggal_lahir: tanggal_lahir,
-        tempat_lahir: tempat_lahir,
-        nomor_telp: nomor_telp,
+        nrp: nrp,
+        jabatan: jabatan,
+        pangkat: pangkat,
       },
       {
         where: {

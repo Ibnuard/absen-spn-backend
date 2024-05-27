@@ -27,6 +27,7 @@ router.post("/user/:id", user.edit_user);
 // Absen
 router.post("/absen/:id", absen.absen);
 router.get("/history/:id", absen.history_absen);
+router.get("/aktif-status/:id", absen.aktif_kelas);
 
 // Jadwal
 router.post("/jadwal", jadwal.add_jadwal);

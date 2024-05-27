@@ -36,8 +36,8 @@ function mergeAbsen(data) {
         mapel,
         tgl_absen,
         periode,
-        jam_absen_in: "",
-        jam_absen_out: "",
+        jam_absen_in: "-",
+        jam_absen_out: "-",
       };
     }
 

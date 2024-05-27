@@ -89,7 +89,16 @@ exports.absen = async (req, res) => {
           Responder(
             res,
             "ERROR",
-            "Mata pelajaran tidak boleh berbeda dengan mata pelajaran saat Clock In."
+            "Mata pelajaran tidak boleh berbeda dengan mata pelajaran saat clock in."
+          );
+          return;
+        }
+
+        if (clockInData.kelas !== kelas) {
+          Responder(
+            res,
+            "ERROR",
+            "Kelas tidak boleh berbeda dengan kelas saat clock in."
           );
           return;
         }
@@ -154,7 +163,7 @@ exports.absen = async (req, res) => {
       type: type,
       user_id: id,
       name: userData.nama,
-      nim: userData.nim,
+      nrp: userData.nrp,
       username: userData.username,
       kelas: kelas,
       mapel_id: mapel,
@@ -192,6 +201,35 @@ exports.history_absen = async (req, res) => {
     const finalizeHistory = mergeAbsen(getAbsen);
 
     Responder(res, "OK", null, finalizeHistory, 200);
+    return;
+  } catch (error) {
+    Responder(res, "ERROR", ERROR_MESSAGE.GENERAL, null, 500);
+    return;
+  }
+};
+
+exports.aktif_kelas = async (req, res) => {
+  const { id } = req.params;
+  try {
+    // === check if already absen
+    const currentDate = moment().format("DD-MM-YYYY");
+
+    const getAbsen = await ABSEN.findAll({
+      where: { user_id: id, tgl_absen: currentDate },
+    });
+
+    if (getAbsen.length !== 1) {
+      Responder(res, "OK", null, { kelas: null, mapel: null }, 200);
+      return;
+    }
+
+    Responder(
+      res,
+      "OK",
+      null,
+      { kelas: getAbsen[0].kelas, mapel: getAbsen[0].mapel },
+      200
+    );
     return;
   } catch (error) {
     Responder(res, "ERROR", ERROR_MESSAGE.GENERAL, null, 500);

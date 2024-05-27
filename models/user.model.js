@@ -9,31 +9,16 @@ module.exports = (sequelize, Sequelize) => {
     password: {
       type: Sequelize.STRING,
     },
-    nim: {
-      type: Sequelize.STRING,
-    },
-    status: {
+    nrp: {
       type: Sequelize.STRING,
     },
     avatar: {
       type: Sequelize.STRING,
     },
-    kelas: {
+    jabatan: {
       type: Sequelize.STRING,
     },
-    tahun_masuk: {
-      type: Sequelize.STRING,
-    },
-    wali_kelas: {
-      type: Sequelize.STRING,
-    },
-    tanggal_lahir: {
-      type: Sequelize.STRING,
-    },
-    tempat_lahir: {
-      type: Sequelize.STRING,
-    },
-    nomor_telp: {
+    pangkat: {
       type: Sequelize.STRING,
     },
   });
