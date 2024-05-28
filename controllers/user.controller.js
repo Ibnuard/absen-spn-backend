@@ -146,8 +146,8 @@ exports.edit_user = async (req, res) => {
       {
         nama: nama,
         nrp: nrp,
-        jabatan: jabatan,
-        pangkat: pangkat,
+        jabatan: jabatan.toUpperCase(),
+        pangkat: pangkat.toUpperCse(),
       },
       {
         where: {
