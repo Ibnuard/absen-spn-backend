@@ -40,7 +40,7 @@ app.use(router);
 
 // simple route
 app.get("/", (req, res) => {
-  res.json({ message: "DEV V1.1" });
+  res.json({ message: "DEV V1.2" });
 });
 
 app.get("/alter", (req, res) => {

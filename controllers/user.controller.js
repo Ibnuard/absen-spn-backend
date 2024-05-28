@@ -71,8 +71,8 @@ exports.add_user = async (req, res) => {
       avatar:
         avatar ||
         "https://res.cloudinary.com/dx4b4m2n2/image/upload/v1716547951/tb9fft00rdblrq5wdruf.jpg",
-      jabatan: jabatan,
-      pangkat: pangkat,
+      jabatan: jabatan.toUpperCase(),
+      pangkat: pangkat.toUpperCase(),
     });
 
     Responder(res, "OK", null, { message: "Sukses" }, 200);
