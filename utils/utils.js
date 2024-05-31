@@ -22,18 +22,27 @@ function isMatchPassword(userPassword, dbPassword) {
   return encUserPass == dbPassword ? true : false;
 }
 
-function mergeAbsen(data) {
+function mergeAbsen(data, currentDate) {
   const mergedData = {};
 
   data.forEach((entry) => {
-    const { tgl_absen, user_id, kelas, mapel, jam_absen, type, periode } =
-      entry;
+    const {
+      tgl_absen,
+      user_id,
+      kelas,
+      mapel,
+      mapel_id,
+      jam_absen,
+      type,
+      periode,
+    } = entry;
 
     if (!mergedData[tgl_absen]) {
       mergedData[tgl_absen] = {
         user_id,
         kelas,
         mapel,
+        mapel_id,
         tgl_absen,
         periode,
         jam_absen_in: "-",
@@ -42,9 +51,19 @@ function mergeAbsen(data) {
     }
 
     if (type === "CLOCK_IN") {
-      mergedData[tgl_absen].jam_absen_in = jam_absen || "-";
+      mergedData[tgl_absen].jam_absen_in = jam_absen;
     } else if (type === "CLOCK_OUT") {
-      mergedData[tgl_absen].jam_absen_out = jam_absen || "-";
+      mergedData[tgl_absen].jam_absen_out = jam_absen;
+    }
+
+    if (
+      mergedData[tgl_absen].jam_absen_in != "-" &&
+      tgl_absen == currentDate &&
+      mergedData[tgl_absen].jam_absen_out == "-"
+    ) {
+      mergedData[tgl_absen].isCanCheckOut = true;
+    } else {
+      mergedData[tgl_absen].isCanCheckOut = false;
     }
   });
 

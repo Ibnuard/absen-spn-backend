@@ -30,8 +30,8 @@ exports.absen = async (req, res) => {
       },
     });
 
-    // get absen per date
-    if (getDateAbsen) {
+    // [Satrt] -- get absen per date
+    if (getDateAbsen.length > 0) {
       if (type == ABSEN_TYPE.CLOCK_IN) {
         const getClockinAbsen = await ABSEN.findOne({
           where: {
@@ -119,7 +119,9 @@ exports.absen = async (req, res) => {
       }
     }
 
-    // get mapel detail
+    // [End] -- Get absen per date
+
+    // [Start] -- get mapel detail
     const getMapel = await MAPEL.findOne({
       where: {
         id: mapel,
@@ -128,7 +130,9 @@ exports.absen = async (req, res) => {
 
     const mapelData = await getMapel["dataValues"];
 
-    // Create Rekap
+    // [End] -- get mapel detail
+
+    // [Start] -- Create Rekap
     async function createRekap(periode, mapel_id) {
       const getRekap = await REKAP.findOne({
         where: {
@@ -158,7 +162,45 @@ exports.absen = async (req, res) => {
       }
     }
 
-    // Create Absen
+    // [End] --  Create Rekap
+
+    // [Start] -- Writing absen history
+    if (type == ABSEN_TYPE.CLOCK_OUT) {
+      const getClockinAbsen = await ABSEN.findOne({
+        where: {
+          user_id: id,
+          tgl_absen: currentDate,
+          type: ABSEN_TYPE.CLOCK_IN,
+        },
+      });
+
+      const clockInData = await getClockinAbsen["dataValues"];
+
+      // Create Absen Clock Out
+      return await ABSEN.create({
+        type: type,
+        user_id: id,
+        name: userData.nama,
+        nrp: userData.nrp,
+        username: userData.username,
+        kelas: clockInData.kelas,
+        mapel_id: clockInData.mapel_id,
+        mapel: clockInData.mapel,
+        tgl_absen: currentDate,
+        jam_absen: moment().format("HH:mm"),
+        periode: clockInData.periode,
+      })
+        .then((result) => {
+          createRekap(result.periode, result.mapel_id);
+
+          return Responder(res, "OK", null, result, 200);
+        })
+        .catch((err) => {
+          throw err;
+        });
+    }
+
+    // Create Absen Clock In
     return await ABSEN.create({
       type: type,
       user_id: id,
@@ -184,6 +226,8 @@ exports.absen = async (req, res) => {
     Responder(res, "ERROR", ERROR_MESSAGE.GENERAL, null, 500);
     return;
   }
+
+  // [End] -- Writing absen history
 };
 
 exports.history_absen = async (req, res) => {
@@ -198,7 +242,10 @@ exports.history_absen = async (req, res) => {
       },
     });
 
-    const finalizeHistory = mergeAbsen(getAbsen);
+    // === check if already absen
+    const currentDate = moment().format("DD-MM-YYYY");
+
+    const finalizeHistory = mergeAbsen(getAbsen, currentDate);
 
     Responder(res, "OK", null, finalizeHistory, 200);
     return;
