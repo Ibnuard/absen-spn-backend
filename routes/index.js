@@ -10,6 +10,7 @@ const jadwal = require("../controllers/jadwal.controller");
 const kelas = require("../controllers/kelas.controller");
 const mapel = require("../controllers/mapel.controller");
 const rekap = require("../controllers/rekap.controller");
+const params = require("../controllers/parameter.controller");
 
 // ==== routes
 
@@ -49,5 +50,9 @@ router.post("/mapel/:id", mapel.edit_mapel);
 
 // Rekap
 router.get("/rekap/:id", rekap.get_rekap);
+
+// params
+router.get("/param/:id", params.get_parameter);
+router.post("/param/:id", params.update_parameter);
 
 module.exports = { router };

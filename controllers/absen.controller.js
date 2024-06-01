@@ -7,6 +7,7 @@ const ABSEN = db.absen;
 const USER = db.user;
 const MAPEL = db.mapel;
 const REKAP = db.rekap;
+const PARAMETER = db.parameter;
 
 exports.absen = async (req, res) => {
   const { id } = req.params;
@@ -163,6 +164,56 @@ exports.absen = async (req, res) => {
     }
 
     // [End] --  Create Rekap
+
+    // [Start] -- Checking parameter
+    // get parameter
+    const getParameter = await PARAMETER.findOne({
+      where: {
+        parameter_id: 1,
+      },
+    });
+
+    const param = await getParameter["dataValues"];
+    const min_clock_in = param.minimum_clock_in;
+    const max_clock_out = param.maximum_clock_out;
+
+    const current_hours = moment().format("HH.mm");
+
+    if (type == ABSEN_TYPE.CLOCK_IN) {
+      // Menggunakan moment untuk membandingkan waktu
+      if (
+        !moment(current_hours, "HH.mm").isSameOrAfter(
+          moment(min_clock_in, "HH.mm")
+        )
+      ) {
+        Responder(
+          res,
+          "ERROR",
+          `Check in baru bisa dilakukan pukul ${min_clock_in}.`,
+          null,
+          400
+        );
+        return;
+      }
+    } else if (type == ABSEN_TYPE.CLOCK_OUT) {
+      // Menggunakan moment untuk membandingkan waktu
+      if (
+        !moment(current_hours, "HH.mm").isSameOrBefore(
+          moment(max_clock_out, "HH.mm")
+        )
+      ) {
+        Responder(
+          res,
+          "ERROR",
+          `Check out hanya bisa dilakukan sebelum pukul ${max_clock_out}.`,
+          null,
+          400
+        );
+        return;
+      }
+    }
+
+    // [End] -- Checking parameter
 
     // [Start] -- Writing absen history
     if (type == ABSEN_TYPE.CLOCK_OUT) {
