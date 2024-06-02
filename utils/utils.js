@@ -85,6 +85,9 @@ function isTerlambat(jadwal) {
   // Tambahkan 15 menit ke jadwalJamIn
   const jadwalJamInPlus15Menit = jadwalMoment.add(15, "minutes");
 
+  console.log("WAKTU SAEKARANG : ", waktuSekarang);
+  console.log("JADWAL PLUS 15 MENIT", jadwalJamInPlus15Menit);
+
   // Periksa apakah waktu sekarang lebih dari jadwalJamIn + 15 menit
   if (waktuSekarang.isAfter(jadwalJamInPlus15Menit)) {
     return true; // Terlambat
