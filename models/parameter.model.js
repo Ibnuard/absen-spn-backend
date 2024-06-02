@@ -6,7 +6,7 @@ module.exports = (sequelize, Sequelize) => {
         type: Sequelize.INTEGER,
         primaryKey: true,
       },
-      minimum_clock_in: {
+      maximum_clock_in: {
         type: Sequelize.STRING,
       },
       maximum_clock_out: {

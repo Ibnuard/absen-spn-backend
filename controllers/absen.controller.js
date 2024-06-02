@@ -174,7 +174,7 @@ exports.absen = async (req, res) => {
     });
 
     const param = await getParameter["dataValues"];
-    const min_clock_in = param.minimum_clock_in;
+    const max_clock_in = param.maximum_clock_in;
     const max_clock_out = param.maximum_clock_out;
 
     const current_hours = moment().format("HH.mm");
@@ -182,14 +182,14 @@ exports.absen = async (req, res) => {
     if (type == ABSEN_TYPE.CLOCK_IN) {
       // Menggunakan moment untuk membandingkan waktu
       if (
-        !moment(current_hours, "HH.mm").isSameOrAfter(
-          moment(min_clock_in, "HH.mm")
+        !moment(current_hours, "HH.mm").isSameOrBefore(
+          moment(max_clock_in, "HH.mm")
         )
       ) {
         Responder(
           res,
           "ERROR",
-          `Check in baru bisa dilakukan pukul ${min_clock_in}.`,
+          `Check in hanya bisa dilakukan sebelum pukul ${min_clock_in}.`,
           null,
           400
         );

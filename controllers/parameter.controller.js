@@ -5,7 +5,7 @@ const PARAMETER = db.parameter;
 
 exports.update_parameter = async (req, res) => {
   const { id } = req.params;
-  const { min_clock_in, max_clock_out } = req.body;
+  const { max_clock_in, max_clock_out } = req.body;
 
   try {
     // get parameter
@@ -20,7 +20,7 @@ exports.update_parameter = async (req, res) => {
     // update parameter
     await PARAMETER.update(
       {
-        minimum_clock_in: min_clock_in || param.min_clock_in,
+        maximum_clock_in: max_clock_in || param.max_clock_in,
         maximum_clock_out: max_clock_out || param.max_clock_out,
       },
       {
