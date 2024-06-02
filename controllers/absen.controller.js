@@ -12,6 +12,7 @@ const MAPEL = db.mapel;
 const REKAP = db.rekap;
 const PARAMETER = db.parameter;
 const JADWAL = db.jadwal;
+const SESI = db.session;
 
 exports.absen = async (req, res) => {
   const { id } = req.params;
@@ -454,6 +455,7 @@ exports.new_absen = async (req, res) => {
     })
       .then((result) => {
         createRekap(result, type);
+        checkSession(id, jadwalData, type);
 
         return Responder(res, "OK", null, result, 200);
       })
@@ -507,6 +509,20 @@ async function createRekap(absen, type) {
   }
 }
 
+async function checkSession(user_id, jadwal, type) {
+  if (type == ABSEN_TYPE.CLOCK_IN) {
+    await SESI.create({
+      user_id: user_id,
+      kelas_id: jadwal.kelas_id,
+      kelas: jadwal.kelas,
+      mapel_id: jadwal.mapel_id,
+      mapel: jadwal.mapel,
+    });
+  } else {
+    await SESI.destroy({ where: { user_id: user_id } });
+  }
+}
+
 exports.history_absen = async (req, res) => {
   const { id } = req.params;
   const { mapelId, periode } = req.query;
@@ -535,26 +551,31 @@ exports.history_absen = async (req, res) => {
 exports.aktif_kelas = async (req, res) => {
   const { id } = req.params;
   try {
-    // === check if already absen
-    const currentDate = moment().format("DD-MM-YYYY");
-
-    const getAbsen = await ABSEN.findAll({
-      where: { user_id: id, tgl_absen: currentDate },
+    const getSesi = await SESI.findOne({
+      where: {
+        user_id: id,
+      },
     });
 
-    if (getAbsen.length !== 1) {
-      Responder(res, "OK", null, { kelas: null, mapel: null }, 200);
+    if (getSesi) {
+      const sesiData = await getSesi["dataValues"];
+      Responder(res, "OK", null, sesiData, 200);
       return;
+    } else {
+      Responder(
+        res,
+        "OK",
+        null,
+        {
+          user_id: null,
+          kelas_id: null,
+          kelas: null,
+          mapel_id: null,
+          mapel: null,
+        },
+        200
+      );
     }
-
-    Responder(
-      res,
-      "OK",
-      null,
-      { kelas: getAbsen[0].kelas, mapel: getAbsen[0].mapel },
-      200
-    );
-    return;
   } catch (error) {
     Responder(res, "ERROR", ERROR_MESSAGE.GENERAL, null, 500);
     return;

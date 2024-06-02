@@ -28,5 +28,6 @@ db.kelas = require("../models/kelas.model.js")(sequelize, Sequelize);
 db.mapel = require("../models/mapel.model.js")(sequelize, Sequelize);
 db.rekap = require("../models/rekap.model.js")(sequelize, Sequelize);
 db.parameter = require("../models/parameter.model.js")(sequelize, Sequelize);
+db.session = require("../models/session.model.js")(sequelize, Sequelize);
 
 module.exports = db;
