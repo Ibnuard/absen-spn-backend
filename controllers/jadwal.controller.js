@@ -2,6 +2,8 @@ const db = require("../db");
 const { ERROR_MESSAGE } = require("../utils/constants");
 const { Responder } = require("../utils/responder");
 const JADWAL = db.jadwal;
+const KELAS = db.kelas;
+const MAPEL = db.mapel;
 
 exports.get_jadwal = async (req, res) => {
   try {
@@ -15,11 +17,50 @@ exports.get_jadwal = async (req, res) => {
 };
 
 exports.add_jadwal = async (req, res) => {
-  const { title, tanggal, lokasi, jam_in, jam_out } = req.body;
+  const { mapel_id, kelas_id, jadwal_day, lokasi, jam_in, jam_out } = req.body;
   try {
+    const getKelas = await KELAS.findOne({
+      where: {
+        id: kelas_id,
+      },
+    });
+
+    const getMapel = await MAPEL.findOne({
+      where: {
+        id: mapel_id,
+      },
+    });
+
+    const mapelData = await getMapel["dataValues"];
+    const kelasData = await getKelas["dataValues"];
+
+    const title = `${kelasData.kelas} - ${mapelData.name}`;
+
+    const getJadwal = await JADWAL.findOne({
+      where: {
+        mapel_id: mapel_id,
+        kelas_id: kelas_id,
+        jadwal_day: jadwal_day.toLowerCase(),
+      },
+    });
+
+    if (getJadwal) {
+      Responder(
+        res,
+        "ERROR",
+        `Sudah ada jadwal untuk kelas dan mapel di hari ${jadwal_day}`,
+        400
+      );
+      return;
+    }
+
     return await JADWAL.create({
       title: title,
-      tanggal: tanggal,
+      mapel_id: mapel_id,
+      kelas_id: kelas_id,
+      kelas: kelasData.kelas,
+      mapel: mapelData.name,
+      jadwal_day: jadwal_day.toLowerCase(),
       lokasi: lokasi,
       jam_in: jam_in,
       jam_out: jam_out,
@@ -54,13 +95,11 @@ exports.delete_jadwal = async (req, res) => {
 };
 
 exports.edit_jadwal = async (req, res) => {
-  const { title, tanggal, lokasi, jam_in, jam_out } = req.body;
+  const { lokasi, jam_in, jam_out } = req.body;
   const { id } = req.params;
   try {
     return await JADWAL.update(
       {
-        title: title,
-        tanggal: tanggal,
         lokasi: lokasi,
         jam_in: jam_in,
         jam_out: jam_out,

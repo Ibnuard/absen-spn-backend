@@ -9,6 +9,12 @@ module.exports = (sequelize, Sequelize) => {
     mapel: {
       type: Sequelize.STRING,
     },
+    kelas_id: {
+      type: Sequelize.INTEGER,
+    },
+    kelas: {
+      type: Sequelize.STRING,
+    },
     periode: {
       type: Sequelize.STRING,
     },

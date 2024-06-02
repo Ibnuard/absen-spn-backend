@@ -1,4 +1,7 @@
 const md5 = require("md5");
+const moment = require("moment");
+require("moment/locale/id");
+moment.locale("id");
 
 function generateRandomNumber(min, max) {
   // Menghasilkan nomor acak di antara min (inklusif) dan max (inklusif)
@@ -70,9 +73,28 @@ function mergeAbsen(data, currentDate) {
   return Object.values(mergedData);
 }
 
+function isTerlambat(jadwal) {
+  // Konversi jadwalJamIn menjadi objek moment
+  const jadwalMoment = moment(jadwal, "HH.mm");
+
+  // Waktu sekarang
+  const waktuSekarang = moment();
+
+  // Tambahkan 15 menit ke jadwalJamIn
+  const jadwalJamInPlus15Menit = jadwalMoment.add(15, "minutes");
+
+  // Periksa apakah waktu sekarang lebih dari jadwalJamIn + 15 menit
+  if (waktuSekarang.isAfter(jadwalJamInPlus15Menit)) {
+    return true; // Terlambat
+  } else {
+    return false; // Tidak terlambat
+  }
+}
+
 module.exports = {
   generateRandomNumber,
   getFormattedDate,
   isMatchPassword,
   mergeAbsen,
+  isTerlambat,
 };

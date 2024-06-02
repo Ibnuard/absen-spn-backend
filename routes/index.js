@@ -26,9 +26,10 @@ router.delete("/user/:id", user.delete_user);
 router.post("/user/:id", user.edit_user);
 
 // Absen
-router.post("/absen/:id", absen.absen);
+//router.post("/absen/:id", absen.absen);
 router.get("/history/:id", absen.history_absen);
 router.get("/aktif-status/:id", absen.aktif_kelas);
+router.post("/absen/:id", absen.new_absen);
 
 // Jadwal
 router.post("/jadwal", jadwal.add_jadwal);

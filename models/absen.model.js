@@ -15,8 +15,14 @@ module.exports = (sequelize, Sequelize) => {
     username: {
       type: Sequelize.STRING,
     },
+    jadwal_id: {
+      type: Sequelize.INTEGER,
+    },
     kelas: {
       type: Sequelize.STRING,
+    },
+    kelas_id: {
+      type: Sequelize.INTEGER,
     },
     mapel_id: {
       type: Sequelize.INTEGER,

@@ -5,7 +5,19 @@ module.exports = (sequelize, Sequelize) => {
       title: {
         type: Sequelize.STRING,
       },
-      tanggal: {
+      mapel_id: {
+        type: Sequelize.INTEGER,
+      },
+      kelas_id: {
+        type: Sequelize.INTEGER,
+      },
+      jadwal_day: {
+        type: Sequelize.STRING,
+      },
+      kelas: {
+        type: Sequelize.STRING,
+      },
+      mapel: {
         type: Sequelize.STRING,
       },
       lokasi: {
