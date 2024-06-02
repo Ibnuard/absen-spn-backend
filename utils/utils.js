@@ -1,5 +1,5 @@
 const md5 = require("md5");
-const moment = require("moment");
+const moment = require("moment-timezone");
 require("moment/locale/id");
 moment.locale("id");
 
@@ -76,17 +76,20 @@ function mergeAbsen(data, currentDate) {
 }
 
 function isTerlambat(jadwal) {
-  // Konversi jadwalJamIn menjadi objek moment
-  const jadwalMoment = moment(jadwal, "HH.mm");
+  // Tentukan zona waktu yang diinginkan
+  const zonaWaktu = "Asia/Jakarta";
 
-  // Waktu sekarang
-  const waktuSekarang = moment();
+  // Konversi jadwal menjadi objek moment dengan zona waktu yang diinginkan
+  const jadwalMoment = moment.tz(jadwal, "HH.mm", zonaWaktu);
 
-  // Tambahkan 15 menit ke jadwalJamIn
-  const jadwalJamInPlus15Menit = jadwalMoment.add(15, "minutes");
+  // Waktu sekarang dalam zona waktu yang diinginkan
+  const waktuSekarang = moment().tz(zonaWaktu);
 
-  console.log("WAKTU SAEKARANG : ", waktuSekarang);
-  console.log("JADWAL PLUS 15 MENIT", jadwalJamInPlus15Menit);
+  // Tambahkan 15 menit ke jadwal
+  const jadwalJamInPlus15Menit = jadwalMoment.clone().add(15, "minutes");
+
+  console.log("WAKTU SEKARANG : ", waktuSekarang.format());
+  console.log("JADWAL PLUS 15 MENIT: ", jadwalJamInPlus15Menit.format());
 
   // Periksa apakah waktu sekarang lebih dari jadwalJamIn + 15 menit
   if (waktuSekarang.isAfter(jadwalJamInPlus15Menit)) {
