@@ -2,6 +2,10 @@ const db = require("../db");
 const { ERROR_MESSAGE } = require("../utils/constants");
 const { Responder } = require("../utils/responder");
 const MAPEL = db.mapel;
+const JADWAL = db.jadwal;
+const ABSEN = db.absen;
+const REKAP = db.rekap;
+const SESI = db.session;
 
 exports.add_mapel = async (req, res) => {
   const { name, maxPertemuan } = req.body;
@@ -36,6 +40,18 @@ exports.delete_mapel = async (req, res) => {
     await MAPEL.destroy({
       where: {
         id: id,
+      },
+    });
+
+    await JADWAL.destroy({
+      where: {
+        mapel_id: id,
+      },
+    });
+
+    await SESI.destroy({
+      where: {
+        mapel_id: id,
       },
     });
 
