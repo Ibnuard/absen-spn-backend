@@ -27,7 +27,8 @@ router.post("/user/:id", user.edit_user);
 
 // Absen
 //router.post("/absen/:id", absen.absen);
-router.get("/history/:id", absen.history_absen);
+router.get("/history/:id", absen.history_absen_new);
+router.get("/history", absen.history_absen_all);
 router.get("/aktif-status/:id", absen.aktif_kelas);
 router.post("/absen/:id", absen.new_absen);
 
@@ -51,6 +52,7 @@ router.post("/mapel/:id", mapel.edit_mapel);
 
 // Rekap
 router.get("/rekap/:id", rekap.get_rekap);
+router.get("/rekap", rekap.get_all_rekap);
 
 // params
 router.get("/param/:id", params.get_parameter);

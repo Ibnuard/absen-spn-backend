@@ -17,6 +17,9 @@ module.exports = (sequelize, Sequelize) => {
       mapel: {
         type: Sequelize.STRING,
       },
+      date: {
+        type: Sequelize.STRING,
+      },
     },
     {
       timestamps: false,
