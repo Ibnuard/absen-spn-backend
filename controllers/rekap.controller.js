@@ -46,6 +46,7 @@ exports.get_all_rekap = async (req, res) => {
     }
 
     const getRekap = await REKAP.findAll({
+      where: whereCondition,
       group: ["mapel_id"],
     });
 
