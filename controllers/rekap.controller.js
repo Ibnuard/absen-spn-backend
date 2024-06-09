@@ -37,6 +37,7 @@ exports.get_all_rekap = async (req, res) => {
   const { search } = req.query;
 
   try {
+    const whereCondition = {};
     // Jika terdapat parameter pencarian, tambahkan kondisi pencarian untuk mapel
     if (search) {
       whereCondition.mapel = {
